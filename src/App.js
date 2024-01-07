@@ -9,7 +9,7 @@ function App() {
   }, []);
 
   const fetchData = async () => {
-    fetch('https://g3y4lpfosi.execute-api.eu-west-2.amazonaws.com/prod/posts')
+    fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
