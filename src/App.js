@@ -1,38 +1,48 @@
 import './App.css';
 import { useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
 
 function App() {
-  const [data, setData] = useState(null);
+
+  const [user, setUser] = useState(null);
+
+  const handleCallbackResponse = (response) => {
+    const userObject = jwt_decode(response.credential);
+    setUser(userObject);
+    document.getElementById("signInDiv").hidden = true;
+  };
+
+  const handleSignOut = (e) => {
+    setUser(null);
+    document.getElementById("signInDiv").hidden = false;
+  };
 
   useEffect(() => {
-    fetchData();
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "138713330475-vku7k9i9kjder2llolqsrudvl4b0lvau.apps.googleusercontent.com",
+      callback: handleCallbackResponse
+    });
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"), {
+        theme: "outline", size: "large"
+      }
+    );
   }, []);
-
-  const fetchData = async () => {
-    fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json(); // Extract JSON from the response
-      })
-      .then(data => {
-        console.log(data);
-        setData(data);
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-      });
-  };
 
   return (
     <div className="App">
-      <h1>API Response:</h1>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>Loading...</p>
-      )}
+      {!user && <h1>Welcome, stranger! Please, sign in!</h1>}
+      <div id="signInDiv"></div>
+      {user &&
+        <div>
+          <h1>Nice to see you, {user.name}!</h1>
+          <img src={user.picture} alt={user.name}/>
+        </div>
+      }
+      {user &&
+        <button onClick={(e) => handleSignOut(e)}>Sign Out</button>
+      }
     </div>
   );
 }
