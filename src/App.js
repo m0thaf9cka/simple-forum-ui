@@ -3,7 +3,25 @@ import { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 
 function App() {
+  const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
+
+  const fetchData = async () => {
+    fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+        setData(data);
+      })
+      .catch((error) => {
+        console.error('There was a problem with the fetch operation:', error);
+      });
+  };
 
   const handleCallbackResponse = (response) => {
     const userObject = jwt_decode(response.credential);
@@ -38,7 +56,6 @@ function App() {
     document.head.appendChild(script);
 
     return () => {
-      // Cleanup: remove the script from the head to avoid memory leaks
       document.head.removeChild(script);
     };
   }, []);
