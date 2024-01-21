@@ -5,6 +5,36 @@ import jwt_decode from 'jwt-decode';
 function App() {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
+  const [message, setMessage] = useState('');
+
+  const handleMessageChange = (event) => {
+    setMessage(event.target.value);
+  };
+
+  const sendMessage = () => {
+    const postData = {
+      content: message
+    };
+    setMessage('');
+    fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    })
+      .then(response => {
+        if (response.status === 200) {
+          console.log('Post request successful');
+          fetchData();
+        } else {
+          console.error('Post request failed with status:', response.status);
+        }
+      })
+      .catch(error => {
+        console.error('Error making POST request:', error);
+      });
+  };
 
   const fetchData = async () => {
     fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
@@ -40,6 +70,8 @@ function App() {
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
     script.defer = true;
+
+    fetchData();
 
     script.onload = () => {
       const google = window.google;
@@ -80,14 +112,28 @@ function App() {
           </div>
           {user &&
             <div className="input-child">
-              <input type="text" name="message" />
-              <button>Send</button>
+              <input
+                type="text"
+                name="message"
+                value={message}
+                onChange={handleMessageChange}
+              />
+              <button onClick={sendMessage}>Send</button>
               <button onClick={(e) => handleSignOut(e)}>Quit</button>
             </div>
           }
         </div>
         <div className="chat-parent">
-          No messages yet :(
+          {data &&
+            <div>
+              {data.map((message, index) => (
+                <div key={index}>{message.content}</div>
+              ))}
+            </div>
+          }
+          {!data &&
+            <div>No messages yet :(</div>
+          }
         </div>
       </div>
     </div>
