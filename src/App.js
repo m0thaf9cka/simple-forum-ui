@@ -26,12 +26,13 @@ function App() {
   const handleCallbackResponse = (response) => {
     const userObject = jwt_decode(response.credential);
     setUser(userObject);
-    document.getElementById('signInDiv').hidden = true;
+    console.log(userObject);
+    document.getElementById('google-sign-in').hidden = true;
   };
 
   const handleSignOut = (e) => {
     setUser(null);
-    document.getElementById('signInDiv').hidden = false;
+    document.getElementById('google-sign-in').hidden = false;
   };
 
   useEffect(() => {
@@ -47,7 +48,7 @@ function App() {
           '138713330475-vku7k9i9kjder2llolqsrudvl4b0lvau.apps.googleusercontent.com',
         callback: handleCallbackResponse
       });
-      google.accounts.id.renderButton(document.getElementById('signInDiv'), {
+      google.accounts.id.renderButton(document.getElementById('google-sign-in'), {
         theme: 'outline',
         size: 'large'
       });
@@ -61,16 +62,34 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      {!user && <h1>Welcome, stranger! Please, sign in!</h1>}
-      <div id="signInDiv" style={{ width: '224px' }}></div>
-      {user && (
-        <div>
-          <h1>Nice to see you, {user.name}!</h1>
-          <img src={user.picture} alt={user.name} />
+    <div className="app-parent">
+      <div className="app-child">
+        <div className="input-parent">
+          {!user &&
+            <span className="welcome-text">
+              Welcome, stranger! Sign in to send messages.
+            </span>
+          }
+          {user &&
+            <span className="welcome-text">
+              Hello, {user.given_name}! Nice to see you.
+            </span>
+          }
+          <div className="sign-in-parent">
+            <div id="google-sign-in" className="sign-in-child"></div>
+          </div>
+          {user &&
+            <div className="input-child">
+              <input type="text" name="message" />
+              <button>Send</button>
+              <button onClick={(e) => handleSignOut(e)}>Quit</button>
+            </div>
+          }
         </div>
-      )}
-      {user && <button onClick={(e) => handleSignOut(e)}>Sign Out</button>}
+        <div className="chat-parent">
+          No messages yet :(
+        </div>
+      </div>
     </div>
   );
 }

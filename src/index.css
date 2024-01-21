@@ -11,3 +11,46 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.app-parent {
+  display: flex;
+  justify-content: center;
+  .app-child {
+    display: flex;
+    flex-direction: column;
+    margin: 5px;
+    width: 600px;
+    .input-parent {
+      display: flex;
+      flex-direction: column;
+      margin: 5px;
+      background-color: aliceblue;
+      .welcome-text {
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+        line-height: 1;
+      }
+      .sign-in-parent {
+        display: flex;
+        justify-content: center;
+        .sign-in-child {
+          margin: 5px;
+        }
+      }
+      .input-child {
+        display: flex;
+        justify-content: center;
+        margin: 5px;
+        gap: 5px;
+      }
+    }
+    .chat-parent {
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      margin: 5px;
+      background-color: aliceblue;
+    }
+  }
+}
