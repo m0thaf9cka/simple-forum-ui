@@ -60,7 +60,7 @@ function App() {
     document.getElementById('google-sign-in').hidden = true;
   };
 
-  const handleSignOut = (e) => {
+  const handleSignOut = () => {
     setUser(null);
     document.getElementById('google-sign-in').hidden = false;
   };
@@ -119,7 +119,7 @@ function App() {
                 onChange={handleMessageChange}
               />
               <button onClick={sendMessage}>Send</button>
-              <button onClick={(e) => handleSignOut(e)}>Quit</button>
+              <button onClick={handleSignOut}>Quit</button>
             </div>
           }
         </div>
