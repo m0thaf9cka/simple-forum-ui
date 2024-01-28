@@ -8,57 +8,56 @@ function App() {
   const [message, setMessage] = useState('');
 
   const handleMessageChange = (event) => {
-    setMessage(event.target.value);
+    const newMessage = event.target.value;
+    if (newMessage.length <= 300) {
+      setMessage(newMessage);
+    }
   };
 
   const createPost = () => {
-    const post = {
-      content: message,
-      name: user.name,
-      picture: user.picture
-    };
-    setMessage('');
-    fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(post),
-    })
-      .then(response => {
-        if (response.status === 200) {
-          console.log('Post request successful');
-          fetchData();
-        } else {
-          console.error('Post request failed with status:', response.status);
-        }
+    if (message) {
+      const post = {
+        content: message,
+        name: user.name,
+        picture: user.picture
+      };
+      setMessage('');
+      fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(post),
       })
-      .catch(error => {
-        console.error('Error making POST request:', error);
-      });
+        .then(response => {
+          if (response.status === 200) {
+            fetchData();
+          } else {
+            console.error('Error: Couldn\'t create post');
+          }
+        })
+        .catch(error => {
+          console.error('Error: ', error);
+        });
+    }
   };
 
   const fetchData = async () => {
     fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
       .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         setData(data);
       })
       .catch((error) => {
-        console.error('There was a problem with the fetch operation:', error);
+        console.error('Error: ', error);
       });
   };
 
   const handleCallbackResponse = (response) => {
     const userObject = jwt_decode(response.credential);
     setUser(userObject);
-    console.log(userObject);
     document.getElementById('google-sign-in').hidden = true;
   };
 
@@ -115,26 +114,39 @@ function App() {
           {user &&
             <div className="input-child">
               <input
+                className="minimal-input"
                 type="text"
                 name="message"
                 value={message}
                 onChange={handleMessageChange}
               />
-              <button onClick={createPost}>Send</button>
-              <button onClick={handleSignOut}>Quit</button>
+              <button className="minimal-button" disabled={message.trim() === ''} onClick={createPost}>Send</button>
+              <button className="minimal-button" onClick={handleSignOut}>Quit</button>
             </div>
           }
         </div>
-        <div className="chat-parent">
+        <div className="history-parent">
           {data &&
-            <div>
-              {data.map((message, index) => (
-                <div key={index}>{message.content}</div>
+            <div className="post-list">
+              {data.map((post, index) => (
+                <div className="post-item" key={index}>
+                  <div className="post-author">
+                    <img className="post-picture"
+                         src={post.picture}
+                         alt={post.name}
+                    />
+                    <div className="post-name">{post.name}</div>
+                  </div>
+                  <div className="post-message">
+                    <div className="post-content">{post.content}</div>
+                    <div className="post-date">{post.formattedDate}</div>
+                  </div>
+                </div>
               ))}
             </div>
           }
           {!data &&
-            <div>No messages yet :(</div>
+            <div className="history-child">No messages yet :(</div>
           }
         </div>
       </div>
