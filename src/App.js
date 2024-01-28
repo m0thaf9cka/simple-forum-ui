@@ -11,9 +11,11 @@ function App() {
     setMessage(event.target.value);
   };
 
-  const sendMessage = () => {
-    const postData = {
-      content: message
+  const createPost = () => {
+    const post = {
+      content: message,
+      name: user.name,
+      picture: user.picture
     };
     setMessage('');
     fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts', {
@@ -21,7 +23,7 @@ function App() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(postData),
+      body: JSON.stringify(post),
     })
       .then(response => {
         if (response.status === 200) {
@@ -118,7 +120,7 @@ function App() {
                 value={message}
                 onChange={handleMessageChange}
               />
-              <button onClick={sendMessage}>Send</button>
+              <button onClick={createPost}>Send</button>
               <button onClick={handleSignOut}>Quit</button>
             </div>
           }
