@@ -6,6 +6,7 @@ function App() {
   const [data, setData] = useState(null);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState('');
+  const [isLoading, setLoading] = useState(true);
 
   const handleMessageChange = (event) => {
     const newMessage = event.target.value;
@@ -16,6 +17,7 @@ function App() {
 
   const createPost = () => {
     if (message) {
+      setLoading(true);
       const post = {
         content: message,
         name: user.name,
@@ -43,6 +45,7 @@ function App() {
   };
 
   const fetchData = async () => {
+    setLoading(true);
     fetch('https://f59jwytlp0.execute-api.eu-west-2.amazonaws.com/prod/posts')
       .then((response) => {
         return response.json();
@@ -52,7 +55,9 @@ function App() {
       })
       .catch((error) => {
         console.error('Error: ', error);
-      });
+      }).finally(() => {
+        setLoading(false);
+    });
   };
 
   const handleCallbackResponse = (response) => {
@@ -120,12 +125,17 @@ function App() {
                 value={message}
                 onChange={handleMessageChange}
               />
-              <button className="minimal-button" disabled={message.trim() === ''} onClick={createPost}>Send</button>
+              <button className="minimal-button" disabled={message.trim() === '' || isLoading} onClick={createPost}>Send</button>
               <button className="minimal-button" onClick={handleSignOut}>Quit</button>
             </div>
           }
         </div>
         <div className="history-parent">
+          {isLoading &&
+            <div className="minimal-spinner-parent">
+              <div className="minimal-spinner"></div>
+            </div>
+          }
           {data &&
             <div className="post-list">
               {data.map((post, index) => (
@@ -144,9 +154,6 @@ function App() {
                 </div>
               ))}
             </div>
-          }
-          {!data &&
-            <div className="history-child">No messages yet :(</div>
           }
         </div>
       </div>

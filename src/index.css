@@ -31,8 +31,9 @@ code {
         justify-content: center;
         font-size: 18px;
         font-weight: 600;
-        margin-top: 10px;
+        margin: 10px 10px 0 10px;
         line-height: 1em;
+        text-align: center;
       }
       .sign-in-parent {
         display: flex;
@@ -81,7 +82,7 @@ code {
             flex-direction: column;
             justify-content: space-between;
             width: 70%;
-            margin: 10px;
+            margin: 10px 15px 10px 10px;
             overflow: hidden;
             text-overflow: ellipsis;
             gap: 10px;
@@ -151,4 +152,31 @@ code {
   border-color: #ccc;
   color: #999;
   cursor: not-allowed;
+}
+
+.minimal-spinner-parent {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.minimal-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-top: 4px solid #333;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media only screen and (max-width: 600px) {
+  .app-child {
+    width: 300px !important;
+  }
 }
