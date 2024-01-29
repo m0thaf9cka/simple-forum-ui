@@ -61,17 +61,24 @@ function App() {
   };
 
   const handleCallbackResponse = (response) => {
-    const userObject = jwt_decode(response.credential);
-    setUser(userObject);
+    const user = jwt_decode(response.credential);
+    setUser(user);
+    localStorage.setItem('user', JSON.stringify(user));
     document.getElementById('google-sign-in').hidden = true;
   };
 
   const handleSignOut = () => {
     setUser(null);
+    localStorage.removeItem('user');
     document.getElementById('google-sign-in').hidden = false;
   };
 
   useEffect(() => {
+    const user = localStorage.getItem('user');
+    if (user) {
+      setUser(JSON.parse(user));
+    }
+
     const script = document.createElement('script');
     script.src = 'https://accounts.google.com/gsi/client';
     script.async = true;
@@ -90,6 +97,9 @@ function App() {
         theme: 'outline',
         size: 'large'
       });
+      if (user) {
+        document.getElementById('google-sign-in').hidden = true;
+      }
     };
 
     document.head.appendChild(script);

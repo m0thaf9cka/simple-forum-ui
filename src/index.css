@@ -87,8 +87,8 @@ code {
             text-overflow: ellipsis;
             gap: 10px;
             .post-content {
-              font-size: 24px;
-              font-weight: 400;
+              font-size: 20px;
+              font-weight: 600;
               line-height: 1em;
               text-align: start;
             }
