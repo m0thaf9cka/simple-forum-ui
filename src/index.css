@@ -92,7 +92,7 @@ code {
               line-height: 1.3em;
               text-align: start;
             }
-            .post-date {
+            .post-duration {
               line-height: 1.3em;
               font-size: 14px;
               font-weight: 600;
@@ -134,7 +134,10 @@ code {
   background-color: #f8f8f8;
   color: #333;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+  transition:
+    background-color 0.3s ease-in-out,
+    color 0.3s ease-in-out,
+    border-color 0.3s ease-in-out;
 }
 
 .minimal-button:hover {
@@ -171,8 +174,12 @@ code {
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @media only screen and (max-width: 600px) {
