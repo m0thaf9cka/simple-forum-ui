@@ -32,7 +32,7 @@ code {
         font-size: 18px;
         font-weight: 600;
         margin: 10px 10px 0 10px;
-        line-height: 1em;
+        line-height: 1.3em;
         text-align: center;
       }
       .sign-in-parent {
@@ -74,7 +74,7 @@ code {
             .post-name {
               font-size: 14px;
               font-weight: 600;
-              line-height: 1em;
+              line-height: 1.3em;
             }
           }
           .post-message {
@@ -89,11 +89,11 @@ code {
             .post-content {
               font-size: 20px;
               font-weight: 600;
-              line-height: 1em;
+              line-height: 1.3em;
               text-align: start;
             }
             .post-date {
-              line-height: 1em;
+              line-height: 1.3em;
               font-size: 14px;
               font-weight: 600;
               text-align: end;
