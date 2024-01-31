@@ -128,7 +128,7 @@ function App() {
         <div className="input-parent">
           {!user && (
             <span className="welcome-text">
-              Welcome, stranger! Sign in to send messages.
+              Welcome to the club, buddy! Sign in to send messages.
             </span>
           )}
           {user && (
