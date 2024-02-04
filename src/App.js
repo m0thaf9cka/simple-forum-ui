@@ -10,7 +10,7 @@ function App() {
 
   const handleMessageChange = (event) => {
     const newMessage = event.target.value;
-    if (newMessage.length <= 300) {
+    if (newMessage.length <= 1500) {
       setMessage(newMessage);
     }
   };
@@ -60,6 +60,11 @@ function App() {
         return response.json();
       })
       .then((data) => {
+        data.forEach((post) => {
+          post.abridgement =
+            post.content.length > 250 ? post.content.substring(0, 200) : '';
+          post.expanded = false;
+        });
         setData(data);
       })
       .catch((error) => {
@@ -81,6 +86,15 @@ function App() {
     setUser(null);
     localStorage.removeItem('user');
     document.getElementById('google-sign-in').hidden = false;
+  };
+
+  const expandPost = (id) => {
+    const newData = [...data];
+    const index = newData.findIndex((post) => post.id === id);
+    if (index !== -1) {
+      newData[index].expanded = !newData[index].expanded;
+      setData(newData);
+    }
   };
 
   useEffect(() => {
@@ -180,8 +194,21 @@ function App() {
                     <div className="post-name">{post.name}</div>
                   </div>
                   <div className="post-message">
-                    <div className="post-content">{post.content}</div>
-                    <div className="post-duration">{post.duration}</div>
+                    <div className="post-content">
+                      {post.abridgement && !post.expanded
+                        ? post.abridgement + '...'
+                        : post.content}
+                    </div>
+                    <div className="post-footer">
+                      <div className="post-duration">{post.duration}</div>
+                      {post.abridgement && (
+                        <button
+                          className="post-control"
+                          onClick={() => expandPost(post.id)}>
+                          {post.expanded ? 'show less' : 'show more'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}

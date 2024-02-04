@@ -68,6 +68,7 @@ code {
             width: 30%;
             margin: 10px;
             .post-picture {
+              width: 64px;
               height: 64px;
               border-radius: 50%;
             }
@@ -85,18 +86,29 @@ code {
             margin: 10px 15px 10px 10px;
             overflow: hidden;
             text-overflow: ellipsis;
-            gap: 10px;
+            gap: 20px;
             .post-content {
               font-size: 20px;
               font-weight: 600;
               line-height: 1.3em;
               text-align: start;
             }
-            .post-duration {
+            .post-footer {
+              display: flex;
+              flex-direction: row-reverse;
+              justify-content: space-between;
               line-height: 1.3em;
               font-size: 14px;
               font-weight: 600;
-              text-align: end;
+              .post-control {
+                background: none;
+                color: inherit;
+                border: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                outline: inherit;
+              }
             }
           }
         }
